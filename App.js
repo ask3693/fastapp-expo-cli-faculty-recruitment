@@ -34,7 +34,7 @@ export default class App extends React.Component {
 
     return (
       <NavigationContainer >
-       <Stack.Navigator   initialRouteName="Login">
+       <Stack.Navigator   initialRouteName="Employee">
         <Stack.Screen  name="Log In" component={LogIn} />
         <Stack.Screen name="Sign Up" component={SignUp} />
         <Stack.Screen name="Employee Login" component={EmployeeLogIn} />

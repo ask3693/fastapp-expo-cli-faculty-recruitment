@@ -34,7 +34,7 @@ const JobForm = (props) => {
         <Content>
           <Card style={{ padding: 20 }}>
             <Form>
-            <H1 style={{alignSelf:'center'}}> Add a Job</H1>
+            <H1 style={{alignSelf:'center'}}> Add an Exam</H1>
 
             <Item stackedLabel>
                 <Label>Title</Label>

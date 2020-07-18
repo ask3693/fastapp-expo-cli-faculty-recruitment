@@ -1,17 +1,17 @@
 import React, { PureComponent } from "react";
 import { View, StyleSheet } from "react-native";
 import { Container, Text, Header, Button, Icon, Fab } from "native-base";
-import JobForm from "./JobForm";
-import JobPosts from "./JobPosts";
-class JobOpenings extends PureComponent {
+import ExamForm from "./ExamForm";
+import ExamList from "./ExamsList";
+class ExamScreen extends PureComponent {
   state={showModal:false}
  
   render() {
     return (
       <View style={styles.mainContainer}>
-        <Text style={styles.mainHeading}>Job Openings </Text>
-        <JobForm setVisibility={(e)=>this.setState({showModal:false})} visible={this.state.showModal} />
-        <JobPosts />
+        <Text style={styles.mainHeading}>All Exams </Text>
+        <ExamForm setVisibility={(e)=>this.setState({showModal:false})} visible={this.state.showModal} />
+        <ExamList />
         <Fab
           onPress={()=>{this.setState({showModal:true}) }}
           // style={{ backgroundColor: COLORS.primary }}
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JobOpenings;
+export default ExamScreen;
