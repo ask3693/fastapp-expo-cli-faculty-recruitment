@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 import JobOpenings from './screens/JobOpenings/JobOpenings'
-import Exams from './screens/Exams/ExamScreen'
 import LogOut from '../LogOut'
 
 function IconWithBadge({ name, badgeCount, color, size }) {
@@ -113,8 +112,8 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Job Openings" component={JobOpenings} />
-        <Tab.Screen name="Exams" component={Exams} />
-        <Tab.Screen name="Candidates" component={SettingsScreen} />
+        {/* <Tab.Screen name="Exams" component={Exams} />
+        <Tab.Screen name="Candidates" component={SettingsScreen} /> */}
         <Tab.Screen name="Log Out"  component={LogOut}  />
       </Tab.Navigator>
    

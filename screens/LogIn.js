@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { ActivityIndicator} from 'react-native'
+import { ActivityIndicator } from "react-native";
+import firebase,{userRef} from "../Firebase";
 import {
   Card,
   Container,
@@ -10,14 +11,58 @@ import {
   Input,
   Label,
   Button,
-  Text
+  Text,
 } from "native-base";
 export default class LogIn extends Component {
-  state={isLoading:false}
+  state = {
+    isLoading: false,
+    email: "aliadeel20@gmail.com",
+    password: "adeel123",
+    errorMessage:''
+  };
+  onLoginClick = () => {
+    if (
+      this.state.email === "" &&
+      this.state.password === ""
+    ) {
+      alert("Enter All fields!");
+    } else {
+      this.setState({
+        isLoading: true,
+      });
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then((res) => {
+          userRef.where('uid','==',res.user.uid).get().then(res=>{
+            if(res.docs[0].data().type ==='candidate'){
+              this.setState({
+                isLoading: false,
+                fullname: "",
+                email: "",
+                password: "",
+              });
+              this.props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'Candidate' }]
+            });
+            }
+            else {
+              firebase.auth().signOut().then(res=>{
+                this.setState({errorMessage:'Invalid Email or Password!',isLoading:false})
+              });
+            }
+          }) .catch((error) => this.setState({ errorMessage: error.message, isLoading:false }));
+          
+           
+         })
+        .catch((error) => this.setState({ errorMessage: error.message, isLoading:false }));
+    }
+  };
   render() {
     return (
-    //   <Container style={{ marginTop: "25%", padding: 20 }}>
-    <Container>
+      //   <Container style={{ marginTop: "25%", padding: 20 }}>
+      <Container>
         <Content>
           <Card style={{ padding: 20 }}>
             <Form>
@@ -25,31 +70,45 @@ export default class LogIn extends Component {
 
               <Item stackedLabel>
                 <Label>Email</Label>
-                <Input />
+                <Input   value={this.state.email}
+                  onChangeText={(e) => this.setState({ email: e })}/>
               </Item>
               <Item stackedLabel last>
                 <Label>Password</Label>
-                <Input secureTextEntry={true} />
+                <Input secureTextEntry={true}  value={this.state.password}
+                  onChangeText={(e) => this.setState({ password: e })}/>
               </Item>
 
-              
-              <Button onPress={()=>{this.setState({isLoading:true})}} style={{ justifyContent: "center", marginTop: 20 }}>
-              {!this.state.isLoading &&<Text>Log In</Text>}
-                {this.state.isLoading &&  <ActivityIndicator size="small" color="white"  />}
+              <Button
+                onPress={() => {
+                  this.onLoginClick()
+                }}
+                style={{ justifyContent: "center", marginTop: 20 }}
+              >
+                {!this.state.isLoading && <Text>Log In</Text>}
+                {this.state.isLoading && (
+                  <ActivityIndicator size="small" color="white" />
+                )}
               </Button>
 
-              
-              <Button onPress={() => this.props.navigation.navigate('Sign Up')} transparent style={{ justifyContent: "center",marginTop:5 }}>
+              <Button
+                onPress={() => this.props.navigation.navigate("Sign Up")}
+                transparent
+                style={{ justifyContent: "center", marginTop: 5 }}
+              >
                 <Text>Sign Up</Text>
               </Button>
-              <Button onPress={() => this.props.navigation.navigate('Employee Login')} transparent>
-                <Text style={{color:'red'}}>Are you an Employee ?</Text>
+              <Button
+                onPress={() => this.props.navigation.navigate("Employee Login")}
+                transparent
+              >
+                <Text style={{ color: "red" }}>Are you an Employee ?</Text>
               </Button>
-              
+              <Text style={{color:'red',alignSelf:'center'}}>{this.state.errorMessage}</Text>
             </Form>
           </Card>
         </Content>
       </Container>
-    ); 
+    );
   }
 }
