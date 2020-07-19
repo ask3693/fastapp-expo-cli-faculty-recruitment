@@ -10,17 +10,19 @@ import {
     Right,
   } from "native-base";
   import { StyleSheet,View  } from "react-native";
-function JobPost() {
+function JobPost(props) {
+    const {title,description,uid} = props.job.data();
+    const {id}  = props.job;
     return (
         <CardItem style={styles.mainContainer}>
         <View style={styles.textContainer}>
-        <Text style={styles.heading}>Web developer</Text>
-        <Text style={styles.description}>Fugiat in officia sint ea reprehenderit nulla ut. Quis sit minim dolor labore sint enim mollit </Text>
+        <Text style={styles.heading}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
         </View>
         <Right>
         <View style={styles.iconsContainer}>
         <Icon type="MaterialIcons"   name="edit" style={{fontSize: 30,marginRight:10 }}/>
-        <Icon type="MaterialIcons"   name="delete" style={{fontSize: 30, color: 'red'}}/>
+        <Icon type="MaterialIcons" onPress={()=> props.onDeleteClick(id)}   name="delete" style={{fontSize: 30, color: 'red'}}/>
       
         </View>
         </Right>

@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { Modal, StyleSheet, Text, ActivityIndicator } from "react-native";
 import {
   Card,
   Container,
-  Header,
   Content,
   Form,
   Item,
@@ -19,14 +11,35 @@ import {
   Button,
   H1,
 } from "native-base";
+import { jobsRef } from "../../../../Firebase";
 
 const JobForm = (props) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const onSubmit = () => {
+    if(title==="" && description===""){
+      alert('Fill all the fields!');
+      return;
+    }
+    setLoading(true);
+    jobsRef
+      .add({
+        title: title,
+        description: description,
+      })
+      .then(() => {
+        setLoading(false);
+        props.setVisibility(false);
+      })
+      .catch((err) => setLoading(false));
+  };
   return (
     <Modal
       animationType="slide"
       visible={props.visible}
       onRequestClose={() => {
-        props.setVisibility(false)
+        props.setVisibility(false);
       }}
       presentationStyle="fullScreen"
     >
@@ -34,25 +47,26 @@ const JobForm = (props) => {
         <Content>
           <Card style={{ padding: 20 }}>
             <Form>
-            <H1 style={{alignSelf:'center'}}> Add a Job</H1>
-
-            <Item stackedLabel>
+              <H1 style={{ alignSelf: "center" }}> Add a Job</H1>
+              <Item stackedLabel>
                 <Label>Title</Label>
-                <Input />
+                <Input value={title} onChangeText={(e) => setTitle(e)} />
               </Item>
               <Item stackedLabel>
                 <Label>Description</Label>
-                <Input />
+                <Input
+                  value={description}
+                  onChangeText={(e) => setDescription(e)}
+                />
               </Item>
-              
-
               <Button
                 onPress={() => {
-                  this.setState({ isLoading: true });
+                  onSubmit();
                 }}
                 style={{ justifyContent: "center", marginTop: 20 }}
               >
-                 <Text style={{color:'white'}}> Add</Text>
+                {!loading && <Text style={{ color: "white" }}> Add</Text>}
+                {loading && <ActivityIndicator size="small" color="white" />}
               </Button>
 
               <Button
@@ -62,7 +76,6 @@ const JobForm = (props) => {
               >
                 <Text>Cancel</Text>
               </Button>
-             
             </Form>
           </Card>
         </Content>

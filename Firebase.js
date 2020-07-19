@@ -19,4 +19,5 @@ const firebaseConfig = {
 
 const Firebase = firebase.initializeApp(firebaseConfig);
 export const userRef = Firebase.firestore().collection('users')
+export const jobsRef = Firebase.firestore().collection('jobs')
 export default Firebase;

@@ -1,21 +1,20 @@
 import React from 'react'
 import {
-    Container,
-    Header,
-    Content,
-    Card,
+  
     CardItem,
     Text,
-    Icon,
+    Button,
     Right,
   } from "native-base";
   import { StyleSheet,View  } from "react-native";
-function JobPost() {
+function JobPost(props) {
+    const {title,description} = props.job.data();
     return (
         <CardItem style={styles.mainContainer}>
-        <View style={styles.textContainer}>
-        <Text style={styles.heading}>Web developer</Text>
-        <Text style={styles.description}>Fugiat in officia sint ea reprehenderit nulla ut. Quis sit minim dolor labore sint enim mollit </Text>
+             <View style={styles.textContainer}>
+        <Text style={styles.heading}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <Button style={styles.applyButton} onPress={()=>{alert('Application Submitted! your exams will be scheduled soon.')}}><Text>Apply </Text></Button>
         </View>
         <Right>
         </Right>
@@ -42,6 +41,11 @@ const styles = StyleSheet.create({
     },
     description:{
         fontSize:10
+    },
+    applyButton:{
+        borderRadius:20,
+        width:200,
+        marginVertical:10
     }
 })
 
